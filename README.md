@@ -1,6 +1,10 @@
-# VoiceAgent LiveKit - Démo Sénégal
+# 🎤 VoiceAgent LiveKit - Agent Vocal IA
 
-Application d'agent vocal en temps réel utilisant LiveKit, OpenAI et ElevenLabs.
+![LiveKit](https://img.shields.io/badge/LiveKit-Ready-blue?style=flat-square&logo=livekit)
+![OpenAI](https://img.shields.io/badge/OpenAI-Integration-green?style=flat-square&logo=openai)
+![FastAPI](https://img.shields.io/badge/FastAPI-Server-red?style=flat-square&logo=fastapi)
+
+Application d'agent vocal en temps réel utilisant LiveKit, OpenAI pour la reconnaissance vocale, traitement du langage naturel et synthèse vocale.
 
 ## 🏗️ Architecture
 
@@ -13,13 +17,20 @@ Le projet est composé de 3 parties :
 ## 📋 Prérequis
 
 - Python 3.9 ou supérieur
-- Compte LiveKit (gratuit sur livekit.cloud)
-- Clé API OpenAI
-- Clé API ElevenLabs
+- Compte LiveKit (gratuit sur [livekit.cloud](https://livekit.cloud))
+- Clé API OpenAI (pour STT, LLM et TTS)
+- Git (pour cloner le repository)
 
-## 🚀 Installation
+## 🚀 Installation rapide
 
-### 1. Configuration LiveKit
+### 1. Cloner le repository
+
+```bash
+git clone https://github.com/MamadouBousso/voixagent_livekit_v1.git
+cd voixagent_livekit_v1
+```
+
+### 2. Configuration LiveKit
 
 Créez un compte gratuit sur [livekit.cloud](https://livekit.cloud) et récupérez :
 - L'URL de votre projet (ex: `wss://votre-projet.livekit.cloud`)
@@ -97,59 +108,84 @@ Le worker se connecte à LiveKit et attend les participants.
 
 ## 🔧 Configuration avancée
 
-### Variables d'environnement du serveur
+### Configuration des variables d'environnement
 
-- `LIVEKIT_URL` : URL du serveur LiveKit
-- `LIVEKIT_API_KEY` : Clé API LiveKit
-- `LIVEKIT_API_SECRET` : Secret API LiveKit
+**Serveur** (`serveur/.env` ou variables d'environnement) :
+```env
+LIVEKIT_URL=wss://votre-projet.livekit.cloud
+LIVEKIT_API_KEY=votre_clé_api_livekit
+LIVEKIT_API_SECRET=votre_secret_livekit
+```
 
-### Variables d'environnement du worker
-
-- `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET` : Identifiants LiveKit
-- `OPENAI_API_KEY` : Clé API OpenAI (pour Whisper et GPT)
-- `ELEVENLABS_API_KEY` : Clé API ElevenLabs (pour la synthèse vocale)
-- `AGENT_INSTRUCTIONS` : Instructions système pour l'agent
-- `STT_MODEL` : Modèle de reconnaissance vocale
-- `LLM_MODEL` : Modèle de langage
-- `TTS_MODEL` : Modèle de synthèse vocale
-- `TTS_VOICE_ID` : ID de la voix à utiliser
+**Worker** (`worker/.env` ou variables d'environnement) :
+```env
+LIVEKIT_URL=wss://votre-projet.livekit.cloud
+LIVEKIT_API_KEY=votre_clé_api_livekit
+LIVEKIT_API_SECRET=votre_secret_livekit
+OPENAI_API_KEY=votre_clé_api_openai
+AGENT_INSTRUCTIONS=You are a friendly, concise assistant.
+STT_MODEL=whisper-1
+LLM_MODEL=gpt-4o-mini
+TTS_MODEL=tts-1
+TTS_VOICE_ID=alloy
+```
 
 ## 🎯 Fonctionnalités
 
-- ✅ Conversation vocale en temps réel
-- ✅ Reconnaissance vocale automatique (Whisper)
-- ✅ Réponses intelligentes (GPT-4o-mini)
-- ✅ Synthèse vocale naturelle (ElevenLabs)
-- ✅ Détection d'activité vocale (VAD)
+- ✅ Conversation vocale en temps réel avec WebRTC
+- ✅ Reconnaissance vocale automatique (OpenAI Whisper)
+- ✅ Réponses intelligentes (OpenAI GPT-4o-mini)
+- ✅ Synthèse vocale naturelle (OpenAI TTS)
+- ✅ Détection d'activité vocale (VAD) avec Silero
 - ✅ Mode push-to-talk optionnel
+- ✅ Interface web responsive et moderne
+- ✅ Configuration flexible via variables d'environnement
 
 ## 🐛 Dépannage
 
-### Le serveur ne démarre pas
-- Vérifiez que le fichier `.env` existe dans `serveur/`
-- Vérifiez que toutes les variables sont définies
+Pour une aide détaillée, consultez le fichier [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md).
 
-### Le worker ne se connecte pas
+### Problèmes courants
+
+**Le serveur ne démarre pas :**
+- Vérifiez que le fichier `.env` existe dans `serveur/`
+- Vérifiez que toutes les variables d'environnement sont définies
+
+**Le worker ne se connecte pas (erreur 401) :**
 - Vérifiez les identifiants LiveKit dans `worker/.env`
 - Assurez-vous que l'URL commence par `wss://`
+- Vérifiez que vos clés API LiveKit sont correctes
 
-### Pas de son
+**L'agent ne répond pas :**
+- Vérifiez votre clé API OpenAI
+- Consultez les logs du worker pour les erreurs
+- Assurez-vous que le microphone est autorisé
+
+**Pas de son :**
 - Vérifiez l'autorisation du microphone dans le navigateur
 - Vérifiez que le lecteur audio n'est pas muet
 - Ouvrez la console du navigateur pour voir les erreurs
-
-### Erreurs d'API
-- Vérifiez vos clés API OpenAI et ElevenLabs
-- Vérifiez que vous avez des crédits disponibles
 
 ## 📚 Documentation
 
 - [LiveKit Documentation](https://docs.livekit.io/)
 - [LiveKit Agents SDK](https://docs.livekit.io/agents/)
 - [OpenAI API](https://platform.openai.com/docs)
-- [ElevenLabs API](https://elevenlabs.io/docs)
+- [Configuration détaillée](SETUP.md) - Guide de configuration des clés API
+- [Dépannage](TROUBLESHOOTING.md) - Solutions aux problèmes courants
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à :
+- Signaler des bugs via les Issues
+- Proposer des améliorations
+- Soumettre des Pull Requests
 
 ## 📝 Licence
 
-Ce projet est un exemple éducatif.
+Ce projet est un exemple éducatif de voixagent avec LiveKit.
+
+---
+
+**Développé par [MamadouBousso](https://github.com/MamadouBousso)**
 
